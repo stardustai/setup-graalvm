@@ -1,11 +1,16 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Graalvm'
+description: 'Setup Graalvm Action'
+author: 'stardust.ai'
 inputs:
-  milliseconds: # change this
+  java-version:
+    description: The JDK version to be installed with GraalVM. E.g. 8, 11. See https://github.com/graalvm/graalvm-ce-builds/releases
+  graalvm-version:
+    description: The version of GraalVM to make available on PATH. E.g. 20.1.0, 19.3.2. See https://github.com/graalvm/graalvm-ce-builds/releases
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  native-image:
+    description: Install GraalVM Native Image
+    required: false
+    default: false
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'dist/main.js'

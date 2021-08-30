@@ -1,18 +1,22 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import {getInput, setFailed} from '@actions/core'
+import {getGraalVM, getNativeImage} from './graalvm'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    await getGraalVM(
+      getInput('java-version', {
+        required: true
+      }),
+      getInput('graalvm-version', {
+        required: true
+      })
+    )
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
+    if (getInput('native-image')) {
+      await getNativeImage()
+    }
   } catch (error) {
-    core.setFailed(error.message)
+    setFailed(error.message)
   }
 }
 
